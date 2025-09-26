@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GST Conversion Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    label { display: block; margin-top: 10px; }
+    input, select { padding: 8px; width: 250px; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <h2>GST Conversion Calculator</h2>
+  
+  <label>Enter Amount:</label>
+  <input type="number" id="amount" placeholder="Enter amount" />
+
+  <label>Select GST Conversion:</label>
+  <select id="conversion">
+    <option value="">-- Choose --</option>
+    <option value="0.9375" data-from="12" data-to="5">12% ➝ 5% (Factor 0.9375)</option>
+    <option value="0.8898" data-from="18" data-to="5">18% ➝ 5% (Factor 0.8898)</option>
+  </select>
+
+  <label>Calculated Value:</label>
+  <input type="text" id="calculated" readonly />
+
+  <label>GST Change:</label>
+  <input type="text" id="gstChange" readonly />
+
+  <script>
+    const amountInput = document.getElementById('amount');
+    const conversionSelect = document.getElementById('conversion');
+    const calculatedInput = document.getElementById('calculated');
+    const gstChangeInput = document.getElementById('gstChange');
+
+    function calculate() {
+      const amount = parseFloat(amountInput.value) || 0;
+      const factor = parseFloat(conversionSelect.value) || 0;
+      const fromGST = conversionSelect.options[conversionSelect.selectedIndex]?.dataset.from || "";
+      const toGST = conversionSelect.options[conversionSelect.selectedIndex]?.dataset.to || "";
+
+      if (amount && factor) {
+        calculatedInput.value = (amount * factor).toFixed(2);
+        gstChangeInput.value = fromGST && toGST ? `${fromGST}% ➝ ${toGST}%` : "";
+      } else {
+        calculatedInput.value = "";
+        gstChangeInput.value = "";
+      }
+    }
+
+    amountInput.addEventListener('input', calculate);
+    conversionSelect.addEventListener('change', calculate);
+  </script>
+</body>
+</html>
